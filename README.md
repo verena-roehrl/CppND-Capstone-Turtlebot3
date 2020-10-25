@@ -6,7 +6,15 @@
 ## Install ROS Noetic
 http://wiki.ros.org/noetic/Installation/Ubuntu
 
-## Create Catkin Workspace
+## Install additional dependencies
+```
+$ sudo apt install ros-noetic-map-server
+$ sudo apt install ros-noetic-amcl
+$ sudo apt install ros-noetic-move-base
+$ sudo apt install ros-noetic-dwa-local-planner
+```
+
+## Create Catkin workspace
 ```
 $ mkdir -p ~/catkin_ws/src
 $ cd catkin_ws
@@ -32,6 +40,13 @@ $ git clone https://github.com/verena-roehrl/CppND-Capstone-Turtlebot3.git
 $ cd CppND-Capstone-Turtlebot3
 ```
 TODO submodules update
+
+## Launch Turtlebot3 ROS nodes
+```
+$ roslaunch turtlebot3_gazebo turtlebot3_world.launch
+$ roslaunch turtlebot3_navigation turtlebot3_navigation.launch 
+```
+
 
 
 
