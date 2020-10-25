@@ -37,9 +37,29 @@ $ echo "export SVGA_VGPU10=0" >> ~/.bashrc
 ```
 $ cd src
 $ git clone https://github.com/verena-roehrl/CppND-Capstone-Turtlebot3.git
-$ cd CppND-Capstone-Turtlebot3
 ```
-TODO submodules update
+## Update submodules
+```
+$ cd CppND-Capstone-Turtlebot3
+$ git submodule init
+$ git submodule update
+$ cd turtlebot3
+$ git checkout master
+$ git pull
+$ cd ..
+$ cd turtlebot3_msgs
+$ git checkout master
+$ git pull
+$ cd ..
+$ cd turtlebot_simulation
+$ git checkout master
+$ git pull
+```
+## Build workspace
+```
+$ cd ~/catkin_ws/
+$ catkin_make
+```
 
 ## Launch Turtlebot3 ROS nodes
 ```
