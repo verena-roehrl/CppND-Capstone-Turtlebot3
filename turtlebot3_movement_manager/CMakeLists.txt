@@ -10,6 +10,7 @@ project(turtlebot3_movement_manager)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  roslib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -104,7 +105,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES turtlebot3_movement_manager
-#  CATKIN_DEPENDS roscpp std_msgs
+  CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -133,6 +134,10 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/turtlebot3_movement_manager_node.cpp)
+
+add_executable(manager src/manager.cpp)
+target_link_libraries(manager ${catkin_LIBRARIES})
+#add_dependencies(manager turtlebot3_movement_manager_gencpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
