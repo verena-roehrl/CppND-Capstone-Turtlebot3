@@ -6,46 +6,32 @@
 #include <vector>
 #include <stdlib.h>
 
-class Manager
-{
+class Turtlebot{
     private:
+        ros::NodeHandle n;
         ros::ServiceClient spawnClient;
-
+        std::string turtlebot_name{"turtlebot"};
+        float x_initial{0.3};
+        float y_initial{0.3};
+        float z_initial{0.0};
     public:
-        Manager(ros::NodeHandle *nh)
+        Turtlebot() {}
+        Turtlebot(std::string name, float x, float y, float z)
+            : turtlebot_name(name), x_initial(x), y_initial(y), z_initial(z)
         {
-            //TODO check for initialization with initialization list
-            this->spawnClient = nh->serviceClient<gazebo_msgs::SpawnModel> ("/gazebo/spawn_urdf_model", false);
-        }
-
-        void spawn()
-        {
-            std::string model_name;
-            std::string x_string;
-            std::string y_string;
-            std::string z_string;
-            ROS_INFO("Insert a name for your Turtlebot");
-            std::cin >> model_name;
-            ROS_INFO("Insert initial x coordinate for your Turtlebot");
-            std::cin >> x_string;
-            ROS_INFO("Insert initial y coordinate for your Turtlebot");
-            std::cin >> y_string;
-            ROS_INFO("Insert initial z coordinate for your Turtlebot");
-            std::cin >> z_string;
-            //geometry_msgs::Pose model_position = handlePositionUserInput(position_string);
-
-
+            this->spawnClient = n.serviceClient<gazebo_msgs::SpawnModel> ("/gazebo/spawn_urdf_model", false);
+            ROS_INFO("Turtlebot created");
+            //spawn urdf
             gazebo_msgs::SpawnModel srv;
-            srv.request.initial_pose.position.x = stof(x_string);
-            srv.request.initial_pose.position.y = stof(y_string);
-            srv.request.initial_pose.position.z = stof(z_string);     
+            srv.request.initial_pose.position.x = x_initial;
+            srv.request.initial_pose.position.y = y_initial;
+            srv.request.initial_pose.position.z = z_initial;     
             srv.request.initial_pose.orientation.x = 0;
             srv.request.initial_pose.orientation.y = 0;
             srv.request.initial_pose.orientation.z = 0;
             srv.request.initial_pose.orientation.w = 1;     
-            //ROS_INFO(model_name);
 
-            srv.request.model_name = model_name;
+            srv.request.model_name = turtlebot_name;
             srv.request.reference_frame="world";
 
             std::string package_path = ros::package::getPath("turtlebot3_movement_manager");
@@ -69,6 +55,35 @@ class Manager
             {
                 ROS_ERROR("Failed to call /gazebo/spawn_urdf_model service");
             }
+        }
+};
+
+class Manager
+{
+    private:
+
+    public:
+        Manager()
+        {
+        }
+
+        void spawn()
+        {
+            std::string model_name;
+            std::string x_string;
+            std::string y_string;
+            std::string z_string;
+            ROS_INFO("Insert a name for your Turtlebot");
+            std::cin >> model_name;
+            ROS_INFO("Insert initial x coordinate for your Turtlebot");
+            std::cin >> x_string;
+            ROS_INFO("Insert initial y coordinate for your Turtlebot");
+            std::cin >> y_string;
+            ROS_INFO("Insert initial z coordinate for your Turtlebot");
+            std::cin >> z_string;
+            //geometry_msgs::Pose model_position = handlePositionUserInput(position_string);
+
+            Turtlebot* turtlebot = new Turtlebot(model_name, stof(x_string), stof(y_string), stof(z_string));
         }
 
 
@@ -104,11 +119,13 @@ class Manager
         }
 };
 
+
+
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "spawn_client");
+    ros::init(argc, argv, "manager");
     ros::NodeHandle nh;
-    Manager manager = Manager(&nh);
+    Manager manager = Manager();
     while(ros::ok())
     {
         ROS_INFO("Press s to spawn a new Turtlebot3");
