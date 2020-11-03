@@ -137,6 +137,10 @@ include_directories(
 
 add_executable(manager src/manager.cpp)
 target_link_libraries(manager ${catkin_LIBRARIES})
+
+add_executable(turtlebot_behaviour src/turtlebot_behaviour.cpp)
+target_link_libraries(turtlebot_behaviour ${catkin_LIBRARIES})
+
 #add_dependencies(manager turtlebot3_movement_manager_gencpp)
 
 ## Rename C++ executable without prefix

@@ -1,0 +1,4 @@
+<launch>
+ <arg name="name"/>
+ <node pkg="turtlebot3_movement_manager" type="turtlebot_behaviour" name="executable" output="screen" args="$(arg name)"/>
+</launch>
