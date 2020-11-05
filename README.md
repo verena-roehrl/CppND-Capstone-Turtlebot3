@@ -51,7 +51,7 @@ $ cd turtlebot3_msgs
 $ git checkout master
 $ git pull
 $ cd ..
-$ cd turtlebot_simulation
+$ cd turtlebot_simulations
 $ git checkout master
 $ git pull
 ```
