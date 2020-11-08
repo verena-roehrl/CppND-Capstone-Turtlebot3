@@ -5,13 +5,13 @@
   <arg name="map_file" default="$(find turtlebot3_navigation_custom)/maps/map.yaml"/>
   <arg name="open_rviz" default="false"/>
   <arg name="move_forward_only" default="false"/>
-  <arg name="name_space" default="turtlebot" />
+  <arg name="namespace" default="turtlebot" />
   <!--
   <arg name="second_tb3" default="tb3_1" />
   <arg name="third_tb3" default="tb3_2" />
   -->
   
-  <group ns = "$(arg name_space)">
+  <group ns = "$(arg namespace)">
   <!-- Map server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
@@ -49,8 +49,8 @@
    <param name="odom_alpha2"               value="0.1"/>
    <param name="odom_alpha3"               value="0.1"/>
    <param name="odom_alpha4"               value="0.1"/>
-   <param name="odom_frame_id"             value="/$(arg name_space)/odom"/>
-   <param name="base_frame_id"             value="/$(arg name_space)/base_footprint"/>
+   <param name="odom_frame_id"             value="/$(arg namespace)/odom"/>
+   <param name="base_frame_id"             value="/$(arg namespace)/base_footprint"/>
 
  </node>
 
@@ -69,17 +69,17 @@
     laser: {data_type: LaserScan, sensor_frame: tb3_0/base_scan, topic: /tb3_0/scan, marking: true, clearing: true, obstacle_range: 2.0, raytrace_range: 5.0}
     -->
     <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param0/local_costmap_params_namespace.yaml" command="load" subst_value="True">
-          local_costmap/robot_base_frame: $(arg name_space)/base_footprint
-          local_costmap/obstacle_layer/laser/sensor_frame: $(arg name_space)/base_scan
-          local_costmap/obstacle_layer/laser/topic: /$(arg name_space)/scan
-          local_costmap/global_frame: $(arg name_space)/map
+          local_costmap/robot_base_frame: $(arg namespace)/base_footprint
+          local_costmap/obstacle_layer/laser/sensor_frame: $(arg namespace)/base_scan
+          local_costmap/obstacle_layer/laser/topic: /$(arg namespace)/scan
+          local_costmap/global_frame: $(arg namespace)/map
     </rosparam>
     
-    <param name="local_costmap/robot_base_frame" value="$(arg name_space)/base_footprint" /> 
-    <param name="local_costmap/obstacle_layer/laser/sensor_frame" value="$(arg name_space)/base_scan" />
-    <param name="local_costmap/obstacle_layer/laser/topic" value="/$(arg name_space)/scan" />
+    <param name="local_costmap/robot_base_frame" value="$(arg namespace)/base_footprint" /> 
+    <param name="local_costmap/obstacle_layer/laser/sensor_frame" value="$(arg namespace)/base_scan" />
+    <param name="local_costmap/obstacle_layer/laser/topic" value="/$(arg namespace)/scan" />
     <!--
-    <param name="local_costmap/global_frame" value="$(arg name_space)/map" />
+    <param name="local_costmap/global_frame" value="$(arg namespace)/map" />
     -->
 
     <!--TODO modify namespace related lines
@@ -89,19 +89,19 @@
     laser: {sensor_frame: tb3_0/base_scan, data_type: LaserScan, topic: /tb3_0/scan, marking: true, clearing: true, obstacle_range: 2.0, raytrace_range: 5.0}
     -->
     <rosparam file="$(find turtlebot3_navigation)/multi_param/multi_param0/global_costmap_params_namespace.yaml" command="load" subst_value="True">
-          global_costmap/robot_base_frame: $(arg name_space)/base_footprint
-          global_costmap/static/map_topic: /$(arg name_space)/map
-          global_costmap/laser/sensor_frame: $(arg name_space)/base_scan
-          global_costmap/laser/topic: /$(arg name_space)/scan
-          global_costmap/global_frame: $(arg name_space)/map
+          global_costmap/robot_base_frame: $(arg namespace)/base_footprint
+          global_costmap/static/map_topic: /$(arg namespace)/map
+          global_costmap/laser/sensor_frame: $(arg namespace)/base_scan
+          global_costmap/laser/topic: /$(arg namespace)/scan
+          global_costmap/global_frame: $(arg namespace)/map
     </rosparam>
     
-    <param name="global_costmap/robot_base_frame" value="$(arg name_space)/base_footprint" />
-    <param name="global_costmap/laser/sensor_frame" value="$(arg name_space)/base_scan" />
-    <param name="global_costmap/laser/topic" value="/$(arg name_space)/scan" />
-    <param name="global_costmap/static/map_topic" value="/$(arg name_space)/map" />
+    <param name="global_costmap/robot_base_frame" value="$(arg namespace)/base_footprint" />
+    <param name="global_costmap/laser/sensor_frame" value="$(arg namespace)/base_scan" />
+    <param name="global_costmap/laser/topic" value="/$(arg namespace)/scan" />
+    <param name="global_costmap/static/map_topic" value="/$(arg namespace)/map" />
     <!--
-    <param name="global_costmap/global_frame" value="$(arg name_space)/map" />
+    <param name="global_costmap/global_frame" value="$(arg namespace)/map" />
     
     -->
 

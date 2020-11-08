@@ -34,9 +34,11 @@ class Turtlebot{
 
             srv.request.model_name = turtlebot_name;
             srv.request.reference_frame="world";
+            srv.request.robot_namespace = turtlebot_name;
 
-            std::string package_path = ros::package::getPath("turtlebot3_movement_manager");
-            std::string urdf_path = package_path + std::string("/urdf/turtlebot3_burger.urdf");
+            std::string package_path = ros::package::getPath("turtlebot3_gazebo_custom");
+
+            std::string urdf_path = package_path + std::string("/urdf/turtlebot3_waffle.urdf");
             std::ifstream file(urdf_path);
             std::string line;
   
@@ -52,7 +54,7 @@ class Turtlebot{
             {
                 ROS_INFO("Successfully spawned URDF model %s", srv.request.model_name.c_str());
                 std::stringstream terminal_command_ss;
-                terminal_command_ss << "x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour.launch name:=\"" << turtlebot_name; // << "\"";          
+                terminal_command_ss << "x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour.launch namespace:=\"" << turtlebot_name; // << "\"";          
                 //std::string terminal_command = strcat("x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour.launch\" ", "name:=\"", turtlebot_name, "\"");
                 std::string terminal_command = terminal_command_ss.str();
                 system(terminal_command.c_str());
