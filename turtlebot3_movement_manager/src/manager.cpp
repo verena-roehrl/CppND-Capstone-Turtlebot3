@@ -54,7 +54,7 @@ class Turtlebot{
             {
                 ROS_INFO("Successfully spawned URDF model %s", srv.request.model_name.c_str());
                 std::stringstream terminal_command_ss;
-                terminal_command_ss << "x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour.launch namespace:=\"" << turtlebot_name; // << "\"";          
+                terminal_command_ss << "x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour.launch namespace:=\"" << turtlebot_name  << "\" x_init:=\"" << std::to_string(x_initial) << "\" y_init:=\"" << std::to_string(y_initial) << "\" z_init:=\"" << std::to_string(z_initial);
                 //std::string terminal_command = strcat("x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour.launch\" ", "name:=\"", turtlebot_name, "\"");
                 std::string terminal_command = terminal_command_ss.str();
                 system(terminal_command.c_str());
