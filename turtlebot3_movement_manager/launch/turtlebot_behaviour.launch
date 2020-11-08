@@ -1,18 +1,6 @@
 <launch>
   <arg name="namespace" default="turtlebot"/>
-  <arg name="x_init" default="0"/>
-  <arg name="y_init" default="0"/>
-  <arg name="z_init" default="0"/>
-  <node pkg="turtlebot3_movement_manager" type="turtlebot_behaviour" name="executable" output="screen" args="$(arg namespace)"/>
-
-  <include file="$(find turtlebot3_gazebo_custom)/launch/multi_turtlebot3_namespace_without_spawn.launch">
-    <arg name="namespace" value="$(arg namespace)" />
-  </include>
-
-  <include file="$(find turtlebot3_navigation_custom)/launch/multi_turtlebot3_navigation_namespace.launch">
-    <arg name="namespace" value="$(arg namespace)" />
-    <arg name="x_init" default="$(arg x_init)"/>
-    <arg name="y_init" default="$(arg y_init)"/>
-    <arg name="z_init" default="$(arg z_init)"/>
-  </include>
+  <node pkg="turtlebot3_movement_manager" type="turtlebot_behaviour" name="turtlebot_behaviour" output="screen" >
+    <param name="namespace" value="$(arg namespace)" />
+  </node>
 </launch>
