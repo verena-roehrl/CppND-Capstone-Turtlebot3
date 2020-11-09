@@ -1,6 +1,6 @@
 <launch>
   <arg name="namespace" default="turtlebot"/>
-  <node pkg="turtlebot3_movement_manager" type="turtlebot_behaviour" name="turtlebot_behaviour" output="screen" >
-    <param name="namespace" value="$(arg namespace)" />
+  <node pkg="turtlebot3_movement_manager" type="turtlebot_behaviour" name="turtlebot_behaviour" output="screen" args="$(arg namespace)">
+    <!--<param name="namespace" value="$(arg namespace)" />-->
   </node>
 </launch>

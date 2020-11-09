@@ -6,27 +6,30 @@ typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseCl
 
 class TurtlebotBehaviour{
     private:
-        ros::NodeHandle n;
+        ros::NodeHandle nh;
         MoveBaseClient moveBaseClient;
         
         std::string turtlebot_name;
         std::string move_base_topic;
     public:
-        TurtlebotBehaviour(std::string goal_topic) : move_base_topic(goal_topic), moveBaseClient(move_base_topic, true)
+        TurtlebotBehaviour(std::string goal_topic) : move_base_topic(goal_topic), moveBaseClient(goal_topic, true)
         {
             //wait for the action server to come up
-            /*
+            
             while(!moveBaseClient.waitForServer(ros::Duration(5.0)))
             {
                 ROS_INFO(move_base_topic.c_str());
                 ROS_INFO("Waiting for the move_base action server to come up");            
             }      
             ROS_INFO("move_base action server is up");
-            */
+            
         }
 
 
-        
+        std::string getMoveBaseTopic()
+        {
+            return nh.getParam(ros::this_node::getName() + "/namespace", turtlebot_name) + "/move_base";
+        }
 
         void autonomousNavigation()
         {
@@ -45,7 +48,7 @@ class TurtlebotBehaviour{
             move_base_msgs::MoveBaseGoal goal;
 
             //we'll send a goal to the robot to move 1 meter forward
-            goal.target_pose.header.frame_id = "leo/base_link";
+            goal.target_pose.header.frame_id = "map";
             goal.target_pose.header.stamp = ros::Time::now();
 
             goal.target_pose.pose.position.x = stof(x_string);
@@ -71,11 +74,12 @@ class TurtlebotBehaviour{
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "turtlebot_behaviour");
-    ros::NodeHandle nh;
-    std::string turtlebot_name;
+    //ros::NodeHandle nh;
+    std::string turtlebot_name = argv[1];
     std::string goal;
-    nh.getParam(ros::this_node::getName() + "/namespace", turtlebot_name);
-    goal = turtlebot_name + "/move_base";
+    //nh.getParam(ros::this_node::getName() + "/namespace", turtlebot_name);
+    goal = "/" + turtlebot_name + "/move_base";
+    //ROS_INFO(argv[1]);
     TurtlebotBehaviour* turtlebotBehaviour = new TurtlebotBehaviour(goal);
     while(ros::ok())
     {
