@@ -12,25 +12,23 @@ class Turtlebot{
         ros::NodeHandle n;
         ros::ServiceClient spawnClient;
         std::string turtlebot_name{"turtlebot"};
-        float x_initial{0.3};
-        float y_initial{0.3};
-        float z_initial{0.0};
+        float x_initial{1.0};
+        float y_initial{-1.0};
     public:
         Turtlebot() {}
-        Turtlebot(std::string name, float x, float y, float z)
-            : turtlebot_name(name), x_initial(x), y_initial(y), z_initial(z)
+        Turtlebot(std::string name, float x, float y)
+            : turtlebot_name(name), x_initial(x), y_initial(y)
         {
             this->spawnClient = n.serviceClient<gazebo_msgs::SpawnModel> ("/gazebo/spawn_urdf_model", false);
-            ROS_INFO("Turtlebot created");
             //spawn urdf
             gazebo_msgs::SpawnModel srv;
             srv.request.initial_pose.position.x = x_initial;
             srv.request.initial_pose.position.y = y_initial;
-            srv.request.initial_pose.position.z = z_initial;     
-            srv.request.initial_pose.orientation.x = 0;
-            srv.request.initial_pose.orientation.y = 0;
-            srv.request.initial_pose.orientation.z = 0;
-            srv.request.initial_pose.orientation.w = 1;     
+            srv.request.initial_pose.position.z = 0.0;     
+            srv.request.initial_pose.orientation.x = 0.0;
+            srv.request.initial_pose.orientation.y = 0.0;
+            srv.request.initial_pose.orientation.z = 0.0;
+            srv.request.initial_pose.orientation.w = 1.0;     
 
             srv.request.model_name = turtlebot_name;
             srv.request.reference_frame="world";
@@ -42,7 +40,8 @@ class Turtlebot{
             std::ifstream file(urdf_path);
             std::string line;
   
-            while(!file.eof()) // Parse the contents of the given urdf in a string
+            // Parse the contents of the given urdf in a string
+            while(!file.eof()) 
             {
                 std::getline(file,line);
                 srv.request.model_xml+=line;
@@ -54,13 +53,14 @@ class Turtlebot{
             {
                 ROS_INFO("Successfully spawned URDF model %s", srv.request.model_name.c_str());
                 
+                // Launch turtlebot_behaviour nodes in new terminals
                 std::stringstream terminal_command_behaviour_ss;
                 terminal_command_behaviour_ss << "x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour.launch namespace:=\"" << turtlebot_name  << "\"\"";
                 std::string terminal_command_behaviour = terminal_command_behaviour_ss.str();
                 system(terminal_command_behaviour.c_str());
                 
                 std::stringstream terminal_command_dependencies_ss;
-                terminal_command_dependencies_ss << "x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour_dependencies.launch namespace:=\"" << turtlebot_name  << "\" x_init:=\"" << std::to_string(x_initial) << "\" y_init:=\"" << std::to_string(y_initial) << "\" z_init:=\"" << std::to_string(z_initial) << "\"\"";
+                terminal_command_dependencies_ss << "x-terminal-emulator -e \"roslaunch turtlebot3_movement_manager turtlebot_behaviour_dependencies.launch namespace:=\"" << turtlebot_name  << "\" x_init:=\"" << std::to_string(x_initial) << "\" y_init:=\"" << std::to_string(y_initial) << "\"\"";
                 std::string terminal_command_dependencies = terminal_command_dependencies_ss.str();
                 system(terminal_command_dependencies.c_str());
                 
@@ -94,43 +94,8 @@ class Manager
             std::cin >> x_string;
             ROS_INFO("Insert initial y coordinate for your Turtlebot");
             std::cin >> y_string;
-            ROS_INFO("Insert initial z coordinate for your Turtlebot");
-            std::cin >> z_string;
-            //geometry_msgs::Pose model_position = handlePositionUserInput(position_string);
 
-            Turtlebot* turtlebot = new Turtlebot(model_name, stof(x_string), stof(y_string), stof(z_string));
-        }
-
-
-        //TODO check why this does not work
-        geometry_msgs::Pose handlePositionUserInput(std::string str)
-        {
-            geometry_msgs::Pose pose;
-            std::vector<double> coordinates;
-            std::istringstream ss(str); 
-
-            // Traverse through all words 
-            do { 
-            // Read a word ERROR
-                std::string coordinate; 
-                ss >> coordinate; 
-                ROS_INFO("%s", coordinate.c_str());
-                coordinates.push_back(std::stof(coordinate));
-                //pose.position.x = std::stod(coordinate) 
-  
-                // While there is more to read 
-            } while (ss);
-
-
-            pose.position.x = coordinates[0];
-            pose.position.y = coordinates[1];
-            pose.position.y = coordinates[2];
-            pose.orientation.x = 0;
-            pose.orientation.y = 0;
-            pose.orientation.z = 0;
-            pose.orientation.w = 1;
-
-            return pose;
+            Turtlebot* turtlebot = new Turtlebot(model_name, stof(x_string), stof(y_string));
         }
 };
 
