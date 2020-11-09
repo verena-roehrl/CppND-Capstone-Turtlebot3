@@ -64,9 +64,9 @@ z : to go back to menu
         {
             std::string x_string;
             std::string y_string;
-            ROS_INFO("Insert desired x coordinate for your Turtlebot %s as goal", turtlebot_name.c_str());
+            ROS_INFO("Insert desired x coordinate for your Turtlebot %s as goal [only floating point values -5 < x < 5]", turtlebot_name.c_str());
             std::cin >> x_string;
-            ROS_INFO("Insert desired y coordinate for your Turtlebot %s as goal", turtlebot_name.c_str());
+            ROS_INFO("Insert desired y coordinate for your Turtlebot %s as goal [only floating point values -7 < y < 7]", turtlebot_name.c_str());
             std::cin >> y_string;
 
             while(!moveBaseClient.waitForServer(ros::Duration(5.0)))

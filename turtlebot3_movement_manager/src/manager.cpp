@@ -90,9 +90,9 @@ class Manager
             std::string z_string;
             ROS_INFO("Insert a name for your Turtlebot");
             std::cin >> model_name;
-            ROS_INFO("Insert initial x coordinate for your Turtlebot");
+            ROS_INFO("Insert initial x coordinate for your Turtlebot %s [only floating point values -5 < x < 5]", model_name.c_str());
             std::cin >> x_string;
-            ROS_INFO("Insert initial y coordinate for your Turtlebot");
+            ROS_INFO("Insert initial y coordinate for your Turtlebot %s [only floating point values -7 < y < 7]", model_name.c_str());
             std::cin >> y_string;
 
             Turtlebot* turtlebot = new Turtlebot(model_name, stof(x_string), stof(y_string));
